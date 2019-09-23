@@ -36,6 +36,7 @@
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.18",
     "@types/minimist": "^1.2.0",
+    "@types/mustache": "^0.8.32",
     "@types/node": "^12.7.5",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
@@ -62,6 +63,7 @@
     "figlet": "^1.2.4",
     "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "mustache": "^3.1.0"
   }
 }
