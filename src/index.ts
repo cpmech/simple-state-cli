@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import figlet from 'figlet';
 import inquirer from 'inquirer';
 import { store } from './store';
-import { generate } from './generator';
+import { generate } from './generate';
 
 async function main() {
   console.log(chalk.yellow(figlet.textSync('STREAMX', { horizontalLayout: 'full' })));

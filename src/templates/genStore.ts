@@ -1,4 +1,9 @@
-export const tStore = `import { ISetter, IObserver, newState } from './types';
+import mustache from 'mustache';
+import { camelize } from '@cpmech/basic';
+import { store } from '../store';
+import { IRender } from './types';
+
+const template = `import { ISetter, IObserver, newState } from './types';
 {{#modules}}
 import { makeModule{{#cap}}{{.}}{{/cap}} } from './{{.}}';
 {{/modules}}
@@ -40,3 +45,10 @@ export class Store {
   }
 }
 `;
+
+export const genStore = (): string => {
+  return mustache.render(template, {
+    modules: store.data.getModuleNamesArray(),
+    cap: () => (t: string, r: IRender) => camelize(r(t), true),
+  });
+};
