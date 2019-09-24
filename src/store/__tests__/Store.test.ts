@@ -9,6 +9,7 @@ class Notifier {
 
 const notifier = new Notifier();
 const store = new Store();
+const refState = newStateData();
 
 beforeEach(() => {
   notifier.counter = 0;
@@ -26,7 +27,7 @@ describe('Store', () => {
 
   describe('state', () => {
     it('should be properly initialized', () => {
-      expect(store.data.state).toEqual({ ...newStateData() });
+      expect(store.data.state).toEqual(refState);
       expect(notifier.counter).toBe(0);
     });
   });
@@ -54,7 +55,7 @@ describe('Store', () => {
       store.data.setBooleanField('someBoolean', true);
       expect(notifier.counter).toBe(1);
       store.reset();
-      expect(store.data.state).toEqual({ ...newStateData() });
+      expect(store.data.state).toEqual(refState);
       expect(notifier.counter).toBe(2);
     });
 
@@ -62,7 +63,7 @@ describe('Store', () => {
       store.data.setBooleanField('someBoolean', true);
       expect(notifier.counter).toBe(1);
       store.reset(false);
-      expect(store.data.state).toEqual({ ...newStateData() });
+      expect(store.data.state).toEqual(refState);
       expect(notifier.counter).toBe(1);
     });
   });
