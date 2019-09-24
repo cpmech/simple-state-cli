@@ -6,6 +6,6 @@ export interface IStateData {
 // zero ///////////////////////////////////////////////////////
 
 export const newStateData = (): IStateData => ({
-  outputDirectory: '/tmp/streamx/store',
+  outputDirectory: '/tmp/simple-state/store',
   moduleNames: 'auth user',
 });

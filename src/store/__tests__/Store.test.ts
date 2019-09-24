@@ -1,34 +1,51 @@
 import { Store } from '../Store';
-import { newState, IObserver, IState } from '../types';
+import { newStateData } from '../data';
 
 describe('Store', () => {
-  it('creates successfully', () => {
+  describe('constructor', () => {
     const store = new Store();
-    expect(store.state).toEqual(newState());
+    it('should bind to the correct onChange function', () => {
+      let outDir = '';
+      const observer = (s: Store) => {
+        outDir = s.data.state.outputDirectory;
+      };
+      const unsubscribe = store.subscribe(observer);
+      store.data.pushModuleName('todo');
+      expect(outDir).toBe(newStateData().outputDirectory);
+      unsubscribe();
+    });
   });
 
-  it('subscribes observers properly', () => {
+  describe('data', () => {
     const store = new Store();
-    let outDir = '';
-    const update: IObserver = (state: IState) => {
-      outDir = state.data.outputDirectory;
-    };
-    store.subscribe(update);
-    store.data.setStringField('outputDirectory', '/tmp/just-testing');
-    expect(outDir).toBe('/tmp/just-testing');
+    it('should be properly initialized', () => {
+      expect(store.data.state).toEqual({ ...newStateData() });
+    });
   });
 
-  it('unsubscribes properly', () => {
+  describe('observers', () => {
     const store = new Store();
-    let outDir = '';
-    const update: IObserver = (state: IState) => {
-      outDir = state.data.outputDirectory;
-    };
-    const unsubscribe = store.subscribe(update);
-    store.data.setStringField('outputDirectory', '/tmp/just-testing');
-    expect(outDir).toBe('/tmp/just-testing');
-    unsubscribe();
-    store.data.setStringField('outputDirectory', '/tmp/something-else');
-    expect(outDir).toBe('/tmp/just-testing');
+    let called = false;
+    const unsubscribe = store.subscribe((s: Store) => (called = !called));
+    it('should call everyone', () => {
+      store.data.setStringField('moduleNames', 'a b c');
+      expect(called).toBeTruthy();
+    });
+
+    it('should be properly unsubscribed', () => {
+      unsubscribe();
+      expect(called).toBeTruthy();
+      store.data.setStringField('moduleNames', 'A B C D');
+      expect(called).toBeTruthy();
+    });
+  });
+
+  describe('reset', () => {
+    const store = new Store();
+    store.data.setStringField('moduleNames', 'hello world');
+    store.reset();
+    it('clears all state', () => {
+      expect(store.data.state).toEqual({ ...newStateData() });
+    });
   });
 });

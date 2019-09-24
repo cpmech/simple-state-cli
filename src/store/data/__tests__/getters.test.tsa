@@ -22,7 +22,7 @@ describe('module data: getters', () => {
 
   it('getStringField throws error if fieldName is incorrect', () => {
     expect(() => getStringField('__inexistent__')).toThrowError(
-      'cannot find field "__inexistent__" in module state "data"',
+      'cannot find field "__inexistent__" in module "data"',
     );
   });
 });

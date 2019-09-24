@@ -1,2 +1,2 @@
-export * from './makeModuleData';
+export * from './Data';
 export * from './types';
