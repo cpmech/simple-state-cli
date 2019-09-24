@@ -1,6 +1,7 @@
 // tslint:disable: member-ordering
 
 import { Data } from './data';
+import { Flags } from './flags';
 
 // Store holds all state, organized within modules
 export class Store {
@@ -12,6 +13,7 @@ export class Store {
 
   //////////////////// modules go here ////////////////////////
   readonly data = new Data(this.onChange);
+  readonly flags = new Flags(this.onChange);
   /////////////////////////////////////////////////////////////
 
   // subscribe adds someone to be notified about state updates
@@ -24,6 +26,7 @@ export class Store {
   // reset clears the state
   reset = () => {
     this.data.reset();
+    this.flags.reset();
   };
 }
 
