@@ -37,22 +37,21 @@ describe('Data', () => {
 
   describe('getters', () => {
     it('should get the right values', () => {
-      expect(data.getStringField('outputDirectory')).toBe('/tmp/simple-state/store');
-      expect(data.getStringField('moduleNames')).toBe('auth user');
-      expect(data.getModuleNamesArray()).toEqual(['auth', 'user']);
       expect(data.getBooleanField('someBoolean')).toBeTruthy();
       expect(data.getNumberField('someNumber')).toBe(123);
+      expect(data.getStringField('outputDirectory')).toBe('/tmp/simple-state/store');
+      expect(data.getModuleNamesArray()).toEqual(['auth', 'user']);
     });
 
     it('should throw error on wrong fieldName', () => {
       expect(() => data.getStringField('__inexistent__')).toThrowError(
-        'cannot find field __inexistent__ in data state',
+        'cannot find field __inexistent__ in data',
       );
     });
 
     it('should throw error on wrong type', () => {
       expect(() => data.getStringField('someNumber')).toThrowError(
-        'type of field someNumber in data state is incorrect',
+        'type of field someNumber in data is incorrect',
       );
     });
   });
@@ -60,25 +59,31 @@ describe('Data', () => {
   describe('setters', () => {
     it('should set the right values', () => {
       data.setStringField('outputDirectory', '/tmp/just-testing');
-      data.setStringField('moduleNames', 'hello world');
       expect(data.state.outputDirectory).toBe('/tmp/just-testing');
-      expect(data.state.moduleNames).toBe('hello world');
-      data.pushModuleNames('hello another one');
-      expect(data.state.moduleNames).toBe('hello world another one');
+      data.pushModuleNames('hello world another one');
+      expect(data.state.moduleNames).toBe('auth user hello world another one');
       data.removeModuleName('another');
-      expect(data.state.moduleNames).toBe('hello world one');
+      expect(data.state.moduleNames).toBe('auth user hello world one');
     });
 
     it('should throw error on wrong fieldName', () => {
       expect(() => data.setStringField('__inexistent__', 'value')).toThrowError(
-        'cannot find field __inexistent__ in data state',
+        'cannot find field __inexistent__ in data',
       );
     });
 
     it('should throw error on wrong type', () => {
       expect(() => data.setStringField('someNumber', 'value')).toThrowError(
-        'type of field someNumber in data state is incorrect',
+        'type of field someNumber in data is incorrect',
       );
+    });
+
+    it('should call onChange', () => {
+      notifier.names = [];
+      data.setBooleanField('someBoolean', true);
+      data.setNumberField('someNumber', 1);
+      data.setStringField('outputDirectory', '/tmp/another-test');
+      expect(notifier.names).toEqual(['bender', 'leela', 'bender', 'leela', 'bender', 'leela']);
     });
   });
 });

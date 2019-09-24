@@ -1,4 +1,14 @@
+// tslint:disable: member-ordering
+
 import { newStateData } from './types';
+import {
+  makeGetBooleanField,
+  makeGetNumberField,
+  makeGetStringField,
+  makeSetBooleanField,
+  makeSetNumberField,
+  makeSetStringField,
+} from '../auxiliary';
 
 export class Data {
   readonly state = newStateData();
@@ -8,54 +18,17 @@ export class Data {
 
   // getters /////////////////////////////////////////////////////////////////////////////////////
 
-  getStringField = (fieldName: string): string => {
-    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
-      throw new Error(`cannot find field ${fieldName} in data state`);
-    }
-    const value = (this.state as any)[fieldName];
-    if (typeof value !== 'string') {
-      throw new Error(`type of field ${fieldName} in data state is incorrect`);
-    }
-    return value as string;
-  };
-
-  getBooleanField = (fieldName: string): boolean => {
-    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
-      throw new Error(`cannot find field ${fieldName} in data state`);
-    }
-    const value = (this.state as any)[fieldName];
-    if (typeof value !== 'boolean') {
-      throw new Error(`type of field ${fieldName} in data state is incorrect`);
-    }
-    return value as boolean;
-  };
-
-  getNumberField = (fieldName: string): number => {
-    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
-      throw new Error(`cannot find field ${fieldName} in data state`);
-    }
-    const value = (this.state as any)[fieldName];
-    if (typeof value !== 'number') {
-      throw new Error(`type of field ${fieldName} in data state is incorrect`);
-    }
-    return value as number;
-  };
+  getBooleanField = makeGetBooleanField(this.state, 'data');
+  getNumberField = makeGetNumberField(this.state, 'data');
+  getStringField = makeGetStringField(this.state, 'data');
 
   getModuleNamesArray = (): string[] => this.state.moduleNames.split(' ');
 
   // setters /////////////////////////////////////////////////////////////////////////////////////
 
-  setStringField = (fieldName: string, value: string) => {
-    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
-      throw new Error(`cannot find field ${fieldName} in data state`);
-    }
-    const oldValue = (this.state as any)[fieldName];
-    if (typeof oldValue !== 'string') {
-      throw new Error(`type of field ${fieldName} in data state is incorrect`);
-    }
-    (this.state as any)[fieldName] = value;
-    this.onChange();
-  };
+  setBooleanField = makeSetBooleanField(this.state, 'data', this.onChange);
+  setNumberField = makeSetNumberField(this.state, 'data', this.onChange);
+  setStringField = makeSetStringField(this.state, 'data', this.onChange);
 
   pushModuleNames = (moduleNames: string) => {
     moduleNames.split(' ').forEach(name => {
