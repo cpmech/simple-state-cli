@@ -10,7 +10,7 @@ describe('Store', () => {
         outDir = s.data.state.outputDirectory;
       };
       const unsubscribe = store.subscribe(observer);
-      store.data.pushModuleName('todo');
+      store.data.onChange();
       expect(outDir).toBe(newStateData().outputDirectory);
       unsubscribe();
     });
