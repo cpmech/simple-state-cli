@@ -2,8 +2,8 @@ import { Data } from '../Data';
 import { newStateData } from '../types';
 
 class Notifier {
-  counter: number[] = [];
-  observers = [() => this.counter.push(this.counter.length)];
+  counter: number = 0;
+  observers = [() => this.counter++];
   onChange = () => this.observers.forEach(observer => observer());
 }
 
@@ -12,7 +12,7 @@ const data = new Data(notifier.onChange);
 const refState = newStateData();
 
 beforeEach(() => {
-  notifier.counter = [];
+  notifier.counter = 0;
   data.resetWithoutCallingOnChange();
 });
 
@@ -26,7 +26,7 @@ describe('Data', () => {
   describe('constructor', () => {
     it('should bind to the correct onChange function', () => {
       data.onChange();
-      expect(notifier.counter).toEqual([0]);
+      expect(notifier.counter).toBe(1);
     });
   });
 
@@ -66,25 +66,25 @@ describe('Data', () => {
       expect(data.state.someBoolean).toBeFalsy();
       expect(data.state.someNumber).toBe(666);
       expect(data.state.outputDirectory).toBe('/tmp/just-testing');
-      expect(notifier.counter).toEqual([0, 1, 2]);
+      expect(notifier.counter).toBe(3);
       data.pushModuleNames('hello world another one');
       expect(data.state.moduleNames).toBe('auth user hello world another one');
-      expect(notifier.counter).toEqual([0, 1, 2, 3]);
+      expect(notifier.counter).toBe(4);
       data.removeModuleName('another');
       expect(data.state.moduleNames).toBe('auth user hello world one');
-      expect(notifier.counter).toEqual([0, 1, 2, 3, 4]);
+      expect(notifier.counter).toBe(5);
     });
 
     it('should not push moduleName if existent', () => {
       data.pushModuleNames('auth');
       expect(data.state.moduleNames).toBe('auth user');
-      expect(notifier.counter).toEqual([]);
+      expect(notifier.counter).toBe(0);
     });
 
     it('should not call onChange when removing module if nothing is changed', () => {
       data.removeModuleName('blah');
       expect(data.state.moduleNames).toBe('auth user');
-      expect(notifier.counter).toEqual([]);
+      expect(notifier.counter).toBe(0);
     });
 
     it('should throw error on wrong fieldName', () => {
@@ -109,14 +109,14 @@ describe('Data', () => {
       data.setBooleanField('someBoolean', false);
       data.setNumberField('someNumber', 666);
       data.setStringField('outputDirectory', '/tmp/another-test');
-      expect(notifier.counter).toEqual([0, 1, 2]);
+      expect(notifier.counter).toBe(3);
     });
 
     it('should not call onChange', () => {
       data.setBooleanField('someBoolean', true);
       data.setNumberField('someNumber', 123);
       data.setStringField('outputDirectory', refState.outputDirectory);
-      expect(notifier.counter).toEqual([]);
+      expect(notifier.counter).toBe(0);
     });
   });
 });
