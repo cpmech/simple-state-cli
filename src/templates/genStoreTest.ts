@@ -1,55 +1,80 @@
 import mustache from 'mustache';
-import { camelize } from '@cpmech/basic';
-import { store } from '../store';
-import { IRender } from './types';
 
-const template = `// tslint:disable: member-ordering
+const template = `import { Store } from '../Store';
+import { newState{{klass}} } from '../{{name}}';
 
-{{#modules}}
-import { {{#cap}}{{.}}{{/cap}} } from './{{.}}';
-{{/modules}}
-
-// Store holds all state, organized within modules
-export class Store {
-  // observers holds everyone who is interested in state updates
-  private observers: IObserver[] = [];
-
-  // onChange notifies all observers that the state has been changed
-  private onChange = () => this.observers.forEach(observer => observer(this));
-
-  //////////////////// modules go here ////////////////////////
-{{#modules}}
-  readonly {{.}} = new {{#cap}}{{.}}{{/cap}}(this.onChange);
-{{/modules}}
-  /////////////////////////////////////////////////////////////
-
-  // subscribe adds someone to be notified about state updates
-  // NOTE: returns a function to unsubscribe
-  subscribe = (observer: IObserver): (() => void) => {
-    const index = this.observers.push(observer) - 1;
-    return () => this.observers.splice(index, 1);
-  };
-
-  // reset clears the state
-  reset = (notifyObservers: boolean = true) => {
-    //////////////////// modules go here ////////////////////////
-{{#modules}}
-    this.{{.}}.resetWithoutCallingOnChange();
-{{/modules}}
-    /////////////////////////////////////////////////////////////
-    if (notifyObservers) {
-      this.onChange();
-    }
-  };
+class Notifier {
+  counter: number = 0;
+  observers = [() => this.counter++];
+  onChange = () => this.observers.forEach(observer => observer());
 }
 
-// updating function
-export type IObserver = (store: Store) => void;
+const notifier = new Notifier();
+const store = new Store();
+const refState = newState{{klass}}();
+
+beforeEach(() => {
+  notifier.counter = 0;
+  store.reset(false);
+});
+
+describe('Store', () => {
+  describe('constructor', () => {
+    it('should bind to the correct onChange function', () => {
+      store.subscribe(notifier.onChange);
+      store.{{name}}.onChange();
+      expect(notifier.counter).toEqual(1);
+    });
+  });
+
+  describe('state', () => {
+    it('should be properly initialized', () => {
+      expect(store.{{name}}.state).toEqual(refState);
+      expect(notifier.counter).toBe(0);
+    });
+  });
+
+  describe('observers', () => {
+    it('should call observers', () => {
+      store.{{name}}.setBooleanField('someBoolean', true);
+      expect(notifier.counter).toBe(1);
+    });
+
+    it('should properly unsubscribe observers', () => {
+      let called = 0;
+      const unsubscribe = store.subscribe((s: Store) => called++);
+      store.{{name}}.setBooleanField('someBoolean', true);
+      expect(called).toBe(1);
+      unsubscribe();
+      expect(called).toBe(1);
+      store.{{name}}.setBooleanField('someBoolean', true);
+      expect(called).toBe(1);
+    });
+  });
+
+  describe('reset', () => {
+    it('clears all state and notifies observers', () => {
+      store.{{name}}.setBooleanField('someBoolean', true);
+      expect(notifier.counter).toBe(1);
+      store.reset();
+      expect(store.{{name}}.state).toEqual(refState);
+      expect(notifier.counter).toBe(2);
+    });
+
+    it('clears all state but does not notify observers', () => {
+      store.{{name}}.setBooleanField('someBoolean', true);
+      expect(notifier.counter).toBe(1);
+      store.reset(false);
+      expect(store.{{name}}.state).toEqual(refState);
+      expect(notifier.counter).toBe(1);
+    });
+  });
+});
 `;
 
-export const genStore = (): string => {
+export const genStoreTest = (name: string, klass: string): string => {
   return mustache.render(template, {
-    modules: store.data.getModuleNamesArray(),
-    cap: () => (t: string, r: IRender) => camelize(r(t), true),
+    name,
+    klass,
   });
 };

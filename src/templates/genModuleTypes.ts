@@ -1,6 +1,6 @@
 import mustache from 'mustache';
 
-const template = `export interface IState{{name}} {
+const template = `export interface IState{{klass}} {
   someBoolean: boolean;
   someNumber: number;
   someString: string;
@@ -8,15 +8,16 @@ const template = `export interface IState{{name}} {
 
 // zero ///////////////////////////////////////////////////////
 
-export const newState{{name}} = (): IState{{name}} => ({
+export const newState{{klass}} = (): IState{{klass}} => ({
   someBoolean: false,
   someNumber: 0,
   someString: '',
 });
 `;
 
-export const genModuleTypes = (name: string): string => {
+export const genModuleTypes = (name: string, klass: string): string => {
   return mustache.render(template, {
     name,
+    klass,
   });
 };

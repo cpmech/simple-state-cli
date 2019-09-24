@@ -1,7 +1,14 @@
 import fsextra from 'fs-extra';
 import path from 'path';
 import { maybeWriteFile, camelize } from '@cpmech/basic';
-import { genIndex, genStore, genModule, genModuleTypes, genModuleIndex } from './templates';
+import {
+  genIndex,
+  genStore,
+  genStoreTest,
+  genModule,
+  genModuleTypes,
+  genModuleIndex,
+} from './templates';
 import { store } from './store';
 
 export const generate = () => {
@@ -23,44 +30,44 @@ export const generate = () => {
     }
   });
 
-  // create directory
   try {
+    // create directory
     const exists = fsextra.pathExistsSync(outdir);
     if (!exists) {
       fsextra.mkdirpSync(outdir);
     }
-  } catch (err) {
-    throw new Error(`cannot create directory = "${outdir}"`);
-  }
 
-  // generate index.ts
-  let fp = path.join(outdir, 'index.ts');
-  try {
+    // generate index.ts
+    let fp = path.join(outdir, 'index.ts');
     maybeWriteFile(options.overwrite, fp, genIndex);
-  } catch (error) {
-    throw new Error(`cannot create file "${fp}". ${error}`);
-  }
 
-  // generate Store.ts
-  fp = path.join(outdir, 'Store.ts');
-  try {
+    // generate Store.ts
+    fp = path.join(outdir, 'Store.ts');
     maybeWriteFile(options.overwrite, fp, genStore);
-  } catch (error) {
-    throw new Error(`cannot create file "${fp}"`);
-  }
 
-  // generate modules
-  names.forEach(dirName => {
-    const name = camelize(dirName, true);
-    const fpMod = path.join(outdir, `${dirName}/${name}.ts`);
-    const fpTypes = path.join(outdir, `${dirName}/types.ts`);
-    const fpIndex = path.join(outdir, `${dirName}/index.ts`);
-    try {
-      maybeWriteFile(options.overwrite, fpMod, () => genModule(name));
-      maybeWriteFile(options.overwrite, fpTypes, () => genModuleTypes(name));
-      maybeWriteFile(options.overwrite, fpIndex, () => genModuleIndex(name));
-    } catch (error) {
-      throw new Error(`cannot create file "${fp}"`);
-    }
-  });
+    // generate Store.test.ts
+    fp = path.join(outdir, '__tests__/Store.test.ts');
+    maybeWriteFile(options.overwrite, fp, () => genStoreTest(names[0], camelize(names[0], true)));
+
+    // generate modules
+    names.forEach(name => {
+      const klass = camelize(name, true);
+
+      // generate module
+      fp = path.join(outdir, `${name}/${klass}.ts`);
+      maybeWriteFile(options.overwrite, fp, () => genModule(name, klass));
+
+      // generate types
+      fp = path.join(outdir, `${name}/types.ts`);
+      maybeWriteFile(options.overwrite, fp, () => genModuleTypes(name, klass));
+
+      // generate index
+      fp = path.join(outdir, `${name}/index.ts`);
+      maybeWriteFile(options.overwrite, fp, () => genModuleIndex(name, klass));
+    });
+
+    // errors
+  } catch (error) {
+    throw new Error(`ERROR: ${error}`);
+  }
 };

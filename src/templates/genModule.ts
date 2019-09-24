@@ -3,10 +3,10 @@ import mustache from 'mustache';
 const template = `// tslint:disable: member-ordering
 
 import { makeGetField, makeSetField } from '@cpmech/basic/dist/esm/pure';
-import { newState{{name}} } from './types';
+import { newState{{klass}} } from './types';
 
-export class {{name}} {
-  readonly state = newState{{name}}();
+export class {{klass}} {
+  readonly state = newState{{klass}}();
 
   // the constructor takes onChange() that is called whenever the state is changed
   constructor(readonly onChange: () => void) {}
@@ -24,15 +24,16 @@ export class {{name}} {
   setStringField = makeSetField<string>(this.state, this.onChange, 'string');
 
   resetWithoutCallingOnChange = () => {
-    for (const [key, value] of Object.entries(newState{{name}}())) {
+    for (const [key, value] of Object.entries(newState{{klass}}())) {
       (this.state as any)[key] = value;
     }
   };
 }
 `;
 
-export const genModule = (name: string): string => {
+export const genModule = (name: string, klass: string): string => {
   return mustache.render(template, {
     name,
+    klass,
   });
 };
