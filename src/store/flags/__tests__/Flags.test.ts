@@ -2,8 +2,8 @@ import { Flags } from '../Flags';
 import { newStateFlags } from '../types';
 
 class Notifier {
-  counter: number[] = [];
-  observers = [() => this.counter.push(this.counter.length)];
+  counter: number = 0;
+  observers = [() => this.counter++];
   onChange = () => this.observers.forEach(observer => observer());
 }
 
@@ -12,7 +12,7 @@ const flags = new Flags(notifier.onChange);
 const refState = newStateFlags();
 
 beforeEach(() => {
-  notifier.counter = [];
+  notifier.counter = 0;
   flags.resetWithoutCallingOnChange();
 });
 
@@ -26,22 +26,22 @@ describe('Flags', () => {
   describe('constructor', () => {
     it('should bind to the correct onChange function', () => {
       flags.onChange();
-      expect(notifier.counter).toEqual([0]);
+      expect(notifier.counter).toBe(1);
     });
   });
 
   describe('reset', () => {
     it('should clear the state to the original values', () => {
-      flags.setBooleanField('skipBase', true);
-      expect(flags.state.skipBase).toBeTruthy();
+      flags.setBooleanField('overwrite', false);
+      expect(flags.state.overwrite).toBeFalsy();
       flags.resetWithoutCallingOnChange();
-      expect(flags.state.skipBase).toBeFalsy();
+      expect(flags.state.overwrite).toBeTruthy();
     });
   });
 
   describe('getters', () => {
     it('should get the right values', () => {
-      expect(flags.getBooleanField('skipBase')).toBeFalsy();
+      expect(flags.getBooleanField('overwrite')).toBeTruthy();
     });
 
     it('should throw error on wrong fieldName', () => {
@@ -51,9 +51,9 @@ describe('Flags', () => {
 
   describe('setters', () => {
     it('should set the right values', () => {
-      flags.setBooleanField('skipBase', true);
-      expect(flags.state.skipBase).toBeTruthy();
-      expect(notifier.counter).toEqual([0]);
+      flags.setBooleanField('overwrite', false);
+      expect(flags.state.overwrite).toBeFalsy();
+      expect(notifier.counter).toBe(1);
     });
 
     it('should throw error on wrong fieldName', () => {
@@ -61,13 +61,13 @@ describe('Flags', () => {
     });
 
     it('should call onChange', () => {
-      flags.setBooleanField('skipBase', true);
-      expect(notifier.counter).toEqual([0]);
+      flags.setBooleanField('overwrite', false);
+      expect(notifier.counter).toBe(1);
     });
 
     it('should not call onChange', () => {
-      flags.setBooleanField('skipBase', false);
-      expect(notifier.counter).toEqual([]);
+      flags.setBooleanField('overwrite', true);
+      expect(notifier.counter).toBe(0);
     });
   });
 });
