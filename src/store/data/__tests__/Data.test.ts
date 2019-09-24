@@ -40,6 +40,8 @@ describe('Data', () => {
       expect(data.getStringField('outputDirectory')).toBe('/tmp/simple-state/store');
       expect(data.getStringField('moduleNames')).toBe('auth user');
       expect(data.getModuleNamesArray()).toEqual(['auth', 'user']);
+      expect(data.getBooleanField('someBoolean')).toBeTruthy();
+      expect(data.getNumberField('someNumber')).toBe(123);
     });
 
     it('should throw error on wrong fieldName', () => {

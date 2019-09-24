@@ -19,6 +19,28 @@ export class Data {
     return value as string;
   };
 
+  getBooleanField = (fieldName: string): boolean => {
+    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
+      throw new Error(`cannot find field ${fieldName} in data state`);
+    }
+    const value = (this.state as any)[fieldName];
+    if (typeof value !== 'boolean') {
+      throw new Error(`type of field ${fieldName} in data state is incorrect`);
+    }
+    return value as boolean;
+  };
+
+  getNumberField = (fieldName: string): number => {
+    if (!Object.prototype.hasOwnProperty.call(this.state, fieldName)) {
+      throw new Error(`cannot find field ${fieldName} in data state`);
+    }
+    const value = (this.state as any)[fieldName];
+    if (typeof value !== 'number') {
+      throw new Error(`type of field ${fieldName} in data state is incorrect`);
+    }
+    return value as number;
+  };
+
   getModuleNamesArray = (): string[] => this.state.moduleNames.split(' ');
 
   // setters /////////////////////////////////////////////////////////////////////////////////////
