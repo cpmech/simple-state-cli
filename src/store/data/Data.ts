@@ -24,12 +24,16 @@ export class Data {
   setStringField = makeSetField<string>(this.state, this.onChange, 'string');
 
   pushModuleNames = (moduleNames: string) => {
+    let changed = false;
     moduleNames.split(' ').forEach(name => {
       if (!this.state.moduleNames.includes(name)) {
         this.state.moduleNames += ` ${name}`;
+        changed = true;
       }
     });
-    this.onChange();
+    if (changed) {
+      this.onChange();
+    }
   };
 
   removeModuleName = (moduleName: string) => {

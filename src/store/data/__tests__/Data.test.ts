@@ -75,6 +75,12 @@ describe('Data', () => {
       expect(notifier.counter).toEqual([0, 1, 2, 3, 4]);
     });
 
+    it('should not push moduleName if existent', () => {
+      data.pushModuleNames('auth');
+      expect(data.state.moduleNames).toBe('auth user');
+      expect(notifier.counter).toEqual([]);
+    });
+
     it('should throw error on wrong fieldName', () => {
       expect(() => data.setBooleanField('__none__', false)).toThrowError('cannot find __none__');
       expect(() => data.setNumberField('__none__', 0)).toThrowError('cannot find __none__');
