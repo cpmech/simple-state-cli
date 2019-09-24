@@ -25,8 +25,10 @@ export class Store {
 
   // reset clears the state
   reset = (notifyObservers: boolean = true) => {
+    //////////////////// modules go here ////////////////////////
     this.data.resetWithoutCallingOnChange();
     this.flags.resetWithoutCallingOnChange();
+    /////////////////////////////////////////////////////////////
     if (notifyObservers) {
       this.onChange();
     }

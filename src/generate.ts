@@ -1,4 +1,4 @@
-import { genIndex, genStore, genTypes } from './templates';
+import { genIndex, genStore } from './templates';
 import { store } from './store';
 
 export const generate = () => {

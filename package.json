@@ -9,8 +9,7 @@
   },
   "repository": "pedrosolabs/streamx-cli",
   "scripts": {
-    "tsnode": "ts-node -O '{\"module\":\"commonjs\",\"resolveJsonModule\":true}'",
-    "start": "yarn tsnode src/index.ts",
+    "start": "yarn build && node dist/index.js",
     "watch": "nodemon -e ts --exec yarn start",
     "build": "rm -rf dist && rollup --config rollup.config-cli.js && chmod +x dist/index.js",
     "test": "jest --verbose",
