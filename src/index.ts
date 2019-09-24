@@ -5,7 +5,9 @@ import { store } from './store';
 import { generate } from './generate';
 
 async function main() {
-  console.log(chalk.yellow(figlet.textSync('STREAMX', { horizontalLayout: 'full' })));
+  console.log(
+    chalk.yellow(figlet.textSync('SIMPLE-STATE', { horizontalLayout: 'controlled smushing' })),
+  );
 
   /*
   const answers = await inquirer.prompt([
