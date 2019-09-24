@@ -10,6 +10,6 @@ export interface IStateData {
 export const newStateData = (): IStateData => ({
   outputDirectory: '/tmp/simple-state/store',
   moduleNames: 'auth user',
-  someBoolean: true,
-  someNumber: 123,
+  someBoolean: false,
+  someNumber: 0,
 });

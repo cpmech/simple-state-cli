@@ -32,17 +32,17 @@ describe('Data', () => {
 
   describe('reset', () => {
     it('should clear the state to the original values', () => {
-      data.setStringField('outputDirectory', '/tmp/just-testing');
-      expect(data.state.outputDirectory).toBe('/tmp/just-testing');
+      data.setBooleanField('someBoolean', true);
+      expect(data.state.someBoolean).toBeTruthy();
       data.resetWithoutCallingOnChange();
-      expect(data.state.outputDirectory).toBe(refState.outputDirectory);
+      expect(data.state.someBoolean).toBeFalsy();
     });
   });
 
   describe('getters', () => {
     it('should get the right values', () => {
-      expect(data.getBooleanField('someBoolean')).toBeTruthy();
-      expect(data.getNumberField('someNumber')).toBe(123);
+      expect(data.getBooleanField('someBoolean')).toBeFalsy();
+      expect(data.getNumberField('someNumber')).toBe(0);
       expect(data.getStringField('outputDirectory')).toBe(refState.outputDirectory);
       expect(data.getModuleNamesArray()).toEqual(['auth', 'user']);
     });
@@ -60,10 +60,10 @@ describe('Data', () => {
 
   describe('setters', () => {
     it('should set the right values', () => {
-      data.setBooleanField('someBoolean', false);
+      data.setBooleanField('someBoolean', true);
       data.setNumberField('someNumber', 666);
       data.setStringField('outputDirectory', '/tmp/just-testing');
-      expect(data.state.someBoolean).toBeFalsy();
+      expect(data.state.someBoolean).toBeTruthy();
       expect(data.state.someNumber).toBe(666);
       expect(data.state.outputDirectory).toBe('/tmp/just-testing');
       expect(notifier.counter).toBe(3);
@@ -88,8 +88,8 @@ describe('Data', () => {
     });
 
     it('should throw error on wrong fieldName', () => {
-      expect(() => data.setBooleanField('__none__', false)).toThrowError('cannot find __none__');
-      expect(() => data.setNumberField('__none__', 0)).toThrowError('cannot find __none__');
+      expect(() => data.setBooleanField('__none__', true)).toThrowError('cannot find __none__');
+      expect(() => data.setNumberField('__none__', 123)).toThrowError('cannot find __none__');
       expect(() => data.setStringField('__none__', 'value')).toThrowError('cannot find __none__');
     });
 
@@ -106,15 +106,15 @@ describe('Data', () => {
     });
 
     it('should call onChange', () => {
-      data.setBooleanField('someBoolean', false);
+      data.setBooleanField('someBoolean', true);
       data.setNumberField('someNumber', 666);
       data.setStringField('outputDirectory', '/tmp/another-test');
       expect(notifier.counter).toBe(3);
     });
 
     it('should not call onChange', () => {
-      data.setBooleanField('someBoolean', true);
-      data.setNumberField('someNumber', 123);
+      data.setBooleanField('someBoolean', false);
+      data.setNumberField('someNumber', 0);
       data.setStringField('outputDirectory', refState.outputDirectory);
       expect(notifier.counter).toBe(0);
     });
