@@ -81,6 +81,12 @@ describe('Data', () => {
       expect(notifier.counter).toEqual([]);
     });
 
+    it('should not call onChange when removing module if nothing is changed', () => {
+      data.removeModuleName('blah');
+      expect(data.state.moduleNames).toBe('auth user');
+      expect(notifier.counter).toEqual([]);
+    });
+
     it('should throw error on wrong fieldName', () => {
       expect(() => data.setBooleanField('__none__', false)).toThrowError('cannot find __none__');
       expect(() => data.setNumberField('__none__', 0)).toThrowError('cannot find __none__');

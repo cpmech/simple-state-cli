@@ -37,11 +37,14 @@ export class Data {
   };
 
   removeModuleName = (moduleName: string) => {
-    this.state.moduleNames = this.state.moduleNames
+    const newValue = this.state.moduleNames
       .split(' ')
       .filter(name => name !== moduleName)
       .join(' ');
-    this.onChange();
+    if (newValue !== this.state.moduleNames) {
+      this.state.moduleNames = newValue;
+      this.onChange();
+    }
   };
 
   reset = () => {
