@@ -1,51 +1,69 @@
 import { Store } from '../Store';
 import { newStateData } from '../data';
 
+class Notifier {
+  counter: number = 0;
+  observers = [() => this.counter++];
+  onChange = () => this.observers.forEach(observer => observer());
+}
+
+const notifier = new Notifier();
+const store = new Store();
+
+beforeEach(() => {
+  notifier.counter = 0;
+  store.reset(false);
+});
+
 describe('Store', () => {
   describe('constructor', () => {
-    const store = new Store();
     it('should bind to the correct onChange function', () => {
-      let outDir = '';
-      const observer = (s: Store) => {
-        outDir = s.data.state.outputDirectory;
-      };
-      const unsubscribe = store.subscribe(observer);
+      store.subscribe(notifier.onChange);
       store.data.onChange();
-      expect(outDir).toBe(newStateData().outputDirectory);
-      unsubscribe();
+      expect(notifier.counter).toEqual(1);
     });
   });
 
   describe('data', () => {
-    const store = new Store();
     it('should be properly initialized', () => {
       expect(store.data.state).toEqual({ ...newStateData() });
+      expect(notifier.counter).toBe(0);
     });
   });
 
   describe('observers', () => {
-    const store = new Store();
-    let called = false;
-    const unsubscribe = store.subscribe((s: Store) => (called = !called));
-    it('should call everyone', () => {
+    it('should call observers', () => {
       store.data.setStringField('moduleNames', 'a b c');
-      expect(called).toBeTruthy();
+      expect(notifier.counter).toBe(1);
     });
 
-    it('should be properly unsubscribed', () => {
+    it('should properly unsubscribe observers', () => {
+      let called = 0;
+      const unsubscribe = store.subscribe((s: Store) => called++);
+      store.data.setStringField('moduleNames', 'a b c');
+      expect(called).toBe(1);
       unsubscribe();
-      expect(called).toBeTruthy();
+      expect(called).toBe(1);
       store.data.setStringField('moduleNames', 'A B C D');
-      expect(called).toBeTruthy();
+      expect(called).toBe(1);
     });
   });
 
   describe('reset', () => {
-    const store = new Store();
-    store.data.setStringField('moduleNames', 'hello world');
-    store.reset();
-    it('clears all state', () => {
+    it('clears all state and notifies observers', () => {
+      store.data.setStringField('moduleNames', 'hello world');
+      expect(notifier.counter).toBe(1);
+      store.reset();
       expect(store.data.state).toEqual({ ...newStateData() });
+      expect(notifier.counter).toBe(2);
+    });
+
+    it('clears all state but does not notify observers', () => {
+      store.data.setStringField('moduleNames', 'hello world');
+      expect(notifier.counter).toBe(1);
+      store.reset(false);
+      expect(store.data.state).toEqual({ ...newStateData() });
+      expect(notifier.counter).toBe(1);
     });
   });
 });

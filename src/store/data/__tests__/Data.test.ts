@@ -13,7 +13,7 @@ const refState = newStateData();
 
 beforeEach(() => {
   notifier.counter = [];
-  data.reset();
+  data.resetWithoutCallingOnChange();
 });
 
 describe('Data', () => {
@@ -34,7 +34,7 @@ describe('Data', () => {
     it('should clear the state to the original values', () => {
       data.setStringField('outputDirectory', '/tmp/just-testing');
       expect(data.state.outputDirectory).toBe('/tmp/just-testing');
-      data.reset();
+      data.resetWithoutCallingOnChange();
       expect(data.state.outputDirectory).toBe(refState.outputDirectory);
     });
   });

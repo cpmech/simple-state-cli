@@ -47,7 +47,7 @@ export class Data {
     }
   };
 
-  reset = () => {
+  resetWithoutCallingOnChange = () => {
     for (const [key, value] of Object.entries(newStateData())) {
       (this.state as any)[key] = value;
     }

@@ -17,7 +17,7 @@ export class Flags {
 
   setBooleanField = makeSetField<boolean>(this.state, this.onChange, 'boolean');
 
-  reset = () => {
+  resetWithoutCallingOnChange = () => {
     for (const [key, value] of Object.entries(newStateFlags())) {
       (this.state as any)[key] = value;
     }

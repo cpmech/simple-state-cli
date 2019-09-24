@@ -24,9 +24,12 @@ export class Store {
   };
 
   // reset clears the state
-  reset = () => {
-    this.data.reset();
-    this.flags.reset();
+  reset = (notifyObservers: boolean = true) => {
+    this.data.resetWithoutCallingOnChange();
+    this.flags.resetWithoutCallingOnChange();
+    if (notifyObservers) {
+      this.onChange();
+    }
   };
 }
 

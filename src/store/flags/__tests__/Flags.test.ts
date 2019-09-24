@@ -13,7 +13,7 @@ const refState = newStateFlags();
 
 beforeEach(() => {
   notifier.counter = [];
-  flags.reset();
+  flags.resetWithoutCallingOnChange();
 });
 
 describe('Flags', () => {
@@ -34,7 +34,7 @@ describe('Flags', () => {
     it('should clear the state to the original values', () => {
       flags.setBooleanField('skipBase', true);
       expect(flags.state.skipBase).toBeTruthy();
-      flags.reset();
+      flags.resetWithoutCallingOnChange();
       expect(flags.state.skipBase).toBeFalsy();
     });
   });
