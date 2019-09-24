@@ -1,7 +1,7 @@
 // tslint:disable: member-ordering
 
+import { makeGetField, makeSetField } from '@cpmech/basic';
 import { newStateData } from './types';
-import { makeGetField, makeSetField } from '../auxiliary';
 
 export class Data {
   readonly state = newStateData();
