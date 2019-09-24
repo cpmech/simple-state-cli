@@ -1,44 +1,31 @@
-export const makeSetBooleanField = (obj: any, name: string, onChange: () => void) => (
-  fieldName: string,
-  value: boolean,
-) => {
+// makeSetFiled makes a setField function
+export const makeSetField = <T extends boolean | number | string>(
+  obj: any,
+  onChange: () => void,
+  TT: T extends boolean
+    ? 'boolean'
+    : T extends number
+    ? 'number'
+    : T extends string
+    ? 'string'
+    : unknown,
+) => (fieldName: string, value: T) => {
+  // check if field exists
   if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
+    throw new Error(`cannot find ${fieldName}`);
   }
-  const oldValue = obj[fieldName];
-  if (typeof oldValue !== 'boolean') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
-  }
-  obj[fieldName] = value;
-  onChange();
-};
 
-export const makeSetNumberField = (obj: any, name: string, onChange: () => void) => (
-  fieldName: string,
-  value: number,
-) => {
-  if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
-  }
+  // previous value
   const oldValue = obj[fieldName];
-  if (typeof oldValue !== 'number') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
-  }
-  obj[fieldName] = value;
-  onChange();
-};
 
-export const makeSetStringField = (obj: any, name: string, onChange: () => void) => (
-  fieldName: string,
-  value: string,
-) => {
-  if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
+  // check if type is correct
+  if (typeof oldValue !== TT) {
+    throw new Error(`type of ${fieldName} is incorrect`);
   }
-  const oldValue = obj[fieldName];
-  if (typeof oldValue !== 'string') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
+
+  // check if value has been changed
+  if (oldValue !== value) {
+    obj[fieldName] = value;
+    onChange();
   }
-  obj[fieldName] = value;
-  onChange();
 };

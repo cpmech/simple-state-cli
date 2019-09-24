@@ -45,13 +45,13 @@ describe('Data', () => {
 
     it('should throw error on wrong fieldName', () => {
       expect(() => data.getStringField('__inexistent__')).toThrowError(
-        'cannot find field __inexistent__ in data',
+        'cannot find __inexistent__',
       );
     });
 
     it('should throw error on wrong type', () => {
       expect(() => data.getStringField('someNumber')).toThrowError(
-        'type of field someNumber in data is incorrect',
+        'type of someNumber is incorrect',
       );
     });
   });
@@ -68,13 +68,13 @@ describe('Data', () => {
 
     it('should throw error on wrong fieldName', () => {
       expect(() => data.setStringField('__inexistent__', 'value')).toThrowError(
-        'cannot find field __inexistent__ in data',
+        'cannot find __inexistent__',
       );
     });
 
     it('should throw error on wrong type', () => {
       expect(() => data.setStringField('someNumber', 'value')).toThrowError(
-        'type of field someNumber in data is incorrect',
+        'type of someNumber is incorrect',
       );
     });
 

@@ -1,14 +1,7 @@
 // tslint:disable: member-ordering
 
 import { newStateData } from './types';
-import {
-  makeGetBooleanField,
-  makeGetNumberField,
-  makeGetStringField,
-  makeSetBooleanField,
-  makeSetNumberField,
-  makeSetStringField,
-} from '../auxiliary';
+import { makeGetField, makeSetField } from '../auxiliary';
 
 export class Data {
   readonly state = newStateData();
@@ -18,17 +11,17 @@ export class Data {
 
   // getters /////////////////////////////////////////////////////////////////////////////////////
 
-  getBooleanField = makeGetBooleanField(this.state, 'data');
-  getNumberField = makeGetNumberField(this.state, 'data');
-  getStringField = makeGetStringField(this.state, 'data');
+  getBooleanField = makeGetField<boolean>(this.state, 'boolean');
+  getNumberField = makeGetField<number>(this.state, 'number');
+  getStringField = makeGetField<string>(this.state, 'string');
 
   getModuleNamesArray = (): string[] => this.state.moduleNames.split(' ');
 
   // setters /////////////////////////////////////////////////////////////////////////////////////
 
-  setBooleanField = makeSetBooleanField(this.state, 'data', this.onChange);
-  setNumberField = makeSetNumberField(this.state, 'data', this.onChange);
-  setStringField = makeSetStringField(this.state, 'data', this.onChange);
+  setBooleanField = makeSetField<boolean>(this.state, this.onChange, 'boolean');
+  setNumberField = makeSetField<number>(this.state, this.onChange, 'number');
+  setStringField = makeSetField<string>(this.state, this.onChange, 'string');
 
   pushModuleNames = (moduleNames: string) => {
     moduleNames.split(' ').forEach(name => {

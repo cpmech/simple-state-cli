@@ -1,32 +1,25 @@
-export const makeGetBooleanField = (obj: any, name: string) => (fieldName: string): boolean => {
+// makeGetField makes a getField function
+export const makeGetField = <T extends boolean | number | string>(
+  obj: any,
+  TT: T extends boolean
+    ? 'boolean'
+    : T extends number
+    ? 'number'
+    : T extends string
+    ? 'string'
+    : unknown,
+) => (fieldName: string): T => {
+  // check if field exists
   if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
+    throw new Error(`cannot find ${fieldName}`);
   }
-  const value = obj[fieldName];
-  if (typeof value !== 'boolean') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
-  }
-  return value as boolean;
-};
 
-export const makeGetNumberField = (obj: any, name: string) => (fieldName: string): number => {
-  if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
-  }
+  // check if type is correct
   const value = obj[fieldName];
-  if (typeof value !== 'number') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
+  if (typeof value !== TT) {
+    throw new Error(`type of ${fieldName} is incorrect`);
   }
-  return value as number;
-};
 
-export const makeGetStringField = (obj: any, name: string) => (fieldName: string): string => {
-  if (!Object.prototype.hasOwnProperty.call(obj, fieldName)) {
-    throw new Error(`cannot find field ${fieldName} in ${name}`);
-  }
-  const value = obj[fieldName];
-  if (typeof value !== 'string') {
-    throw new Error(`type of field ${fieldName} in ${name} is incorrect`);
-  }
-  return value as string;
+  // results
+  return value as T;
 };
