@@ -6,6 +6,7 @@ import {
   genStore,
   genStoreTest,
   genModule,
+  genModuleTest,
   genModuleTypes,
   genModuleIndex,
 } from './templates';
@@ -56,6 +57,10 @@ export const generate = () => {
       // generate module
       fp = path.join(outdir, `${name}/${klass}.ts`);
       maybeWriteFile(options.overwrite, fp, () => genModule(name, klass));
+
+      // generate module test
+      fp = path.join(outdir, `${name}/__tests__/${klass}.test.ts`);
+      maybeWriteFile(options.overwrite, fp, () => genModuleTest(name, klass));
 
       // generate types
       fp = path.join(outdir, `${name}/types.ts`);
