@@ -9,7 +9,6 @@ async function main() {
     chalk.yellow(figlet.textSync('SIMPLE-STATE', { horizontalLayout: 'controlled smushing' })),
   );
 
-  /*
   const answers = await inquirer.prompt([
     {
       name: 'moduleNames',
@@ -22,7 +21,6 @@ async function main() {
   const moduleNames = (answers as any).moduleNames;
 
   store.data.setStringField('moduleNames', moduleNames);
-  */
 
   try {
     generate();
