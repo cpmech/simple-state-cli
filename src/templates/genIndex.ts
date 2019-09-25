@@ -1,4 +1,5 @@
-const template = `import { Store } from './Store';
+const template = `export * from './Store';
+import { Store } from './Store';
 
 export const store = new Store();
 `;

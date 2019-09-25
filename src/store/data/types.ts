@@ -8,7 +8,7 @@ export interface IStateData {
 // zero ///////////////////////////////////////////////////////
 
 export const newStateData = (): IStateData => ({
-  outputDirectory: '/tmp/simple-state/store',
+  outputDirectory: '/tmp/simple-state',
   moduleNames: 'auth user',
   someBoolean: false,
   someNumber: 0,

@@ -9,17 +9,23 @@ import {
   genModuleTest,
   genModuleTypes,
   genModuleIndex,
+  genSrcIndex,
+  genJestConfig,
+  genPackageJson,
+  genRollupConfig,
 } from './templates';
 import { store } from './store';
 
 export const generate = () => {
   // constants
-  const outdir = store.data.state.outputDirectory.trim();
+  const outDir = store.data.state.outputDirectory.trim();
+  const srcDir = path.join(outDir, 'src');
+  const storeDir = path.join(outDir, 'src', 'store');
   const names = store.data.getModuleNamesArray();
   const options = store.flags.state;
 
   // check
-  if (outdir.length < 3) {
+  if (outDir.length < 3) {
     throw new Error('invalid output directory');
   }
   if (names.length < 1) {
@@ -32,22 +38,46 @@ export const generate = () => {
   });
 
   try {
-    // create directory
-    const exists = fsextra.pathExistsSync(outdir);
+    // create directories
+    const exists = fsextra.pathExistsSync(storeDir);
     if (!exists) {
-      fsextra.mkdirpSync(outdir);
+      fsextra.mkdirpSync(storeDir);
     }
 
+    let fp = '';
+
+    //////////// project (testing) /////////////////////////////
+
+    if (options.generateProject) {
+      // generate jest.config.js
+      fp = path.join(outDir, 'jest.config.js');
+      maybeWriteFile(options.overwrite, fp, () => genJestConfig());
+
+      // generate rollup.config.js
+      fp = path.join(outDir, 'rollup.config.js');
+      maybeWriteFile(options.overwrite, fp, () => genRollupConfig());
+
+      // generate package.json
+      fp = path.join(outDir, 'package.json');
+      maybeWriteFile(options.overwrite, fp, () => genPackageJson());
+
+      // generate src/index.ts
+      fp = path.join(srcDir, 'index.ts');
+      maybeWriteFile(options.overwrite, fp, () => genSrcIndex(names[0], camelize(names[0], true)));
+    }
+
+    //////////// store /////////////////////////////////////////
+
     // generate index.ts
-    let fp = path.join(outdir, 'index.ts');
+    fp = path.join(storeDir, 'index.ts');
     maybeWriteFile(options.overwrite, fp, genIndex);
 
     // generate Store.ts
-    fp = path.join(outdir, 'Store.ts');
+    fp = path.join(storeDir, 'Store.ts');
     maybeWriteFile(options.overwrite, fp, genStore);
 
     // generate Store.test.ts
-    fp = path.join(outdir, '__tests__/Store.test.ts');
+    fp = path.join(storeDir, '__tests__/Store.test.ts');
     maybeWriteFile(options.overwrite, fp, () => genStoreTest(names[0], camelize(names[0], true)));
 
     // generate modules
@@ -55,19 +85,19 @@ export const generate = () => {
       const klass = camelize(name, true);
 
       // generate module
-      fp = path.join(outdir, `${name}/${klass}.ts`);
+      fp = path.join(storeDir, `${name}/${klass}.ts`);
       maybeWriteFile(options.overwrite, fp, () => genModule(name, klass));
 
       // generate module test
-      fp = path.join(outdir, `${name}/__tests__/${klass}.test.ts`);
+      fp = path.join(storeDir, `${name}/__tests__/${klass}.test.ts`);
       maybeWriteFile(options.overwrite, fp, () => genModuleTest(name, klass));
 
       // generate types
-      fp = path.join(outdir, `${name}/types.ts`);
+      fp = path.join(storeDir, `${name}/types.ts`);
       maybeWriteFile(options.overwrite, fp, () => genModuleTypes(name, klass));
 
       // generate index
-      fp = path.join(outdir, `${name}/index.ts`);
+      fp = path.join(storeDir, `${name}/index.ts`);
       maybeWriteFile(options.overwrite, fp, () => genModuleIndex(name, klass));
     });
 

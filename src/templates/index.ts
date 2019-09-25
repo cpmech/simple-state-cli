@@ -5,3 +5,7 @@ export * from './genModule';
 export * from './genModuleTest';
 export * from './genModuleTypes';
 export * from './genModuleIndex';
+export * from './genSrcIndex';
+export * from './genJestConfig';
+export * from './genPackageJson';
+export * from './genRollupConfig';
