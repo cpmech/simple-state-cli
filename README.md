@@ -14,6 +14,8 @@ yarn global add @cpmech/simple-state-cli
 simple-state-cli
 ```
 
+<img src="sshot01.png">
+
 ### Dependencies
 
 - chalk — colorizes the output
