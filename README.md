@@ -2,6 +2,18 @@
 
 This tool creates a simple state management strategy using the Observer pattern.
 
+## Installation
+
+```bash
+yarn global add simple-state-cli
+```
+
+## Usage
+
+```bash
+simple-state-cli
+```
+
 ### Dependencies
 
 - chalk — colorizes the output

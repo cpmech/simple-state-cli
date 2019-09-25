@@ -1,13 +1,13 @@
 {
-  "name": "@plabs/streamx-cli",
+  "name": "@cpmech/simple-state-cli",
   "version": "0.1.0",
   "license": "MIT",
   "author": {
-    "name": "Pedroso Labs",
-    "email": "pedroso.xlabs@gmail.com",
-    "url": "https://github.com/pedrosolabs"
+    "name": "Dorival Pedroso",
+    "email": "dorival.pedroso@gmail.com",
+    "url": "https://github.com/cpmech"
   },
-  "repository": "pedrosolabs/streamx-cli",
+  "repository": "cpmech/simple-state-cli",
   "scripts": {
     "start": "yarn build && node dist/index.js",
     "watch": "nodemon -e ts --exec yarn start",
