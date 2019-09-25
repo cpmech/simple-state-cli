@@ -17,16 +17,16 @@
     "cov": "yarn build && jest --coverage",
     "dist": "yarn build && yarn publish --access=public"
   },
-  "description": "streamx-cli",
+  "description": "Simple state management",
   "keywords": [
-    "streamx-cli"
+    "state"
   ],
   "main": "./dist/index.js",
   "files": [
     "dist"
   ],
   "bin": {
-    "streamx-cli": "./dist/index.js"
+    "simple-state-cli": "./dist/index.js"
   },
   "devDependencies": {
     "@types/clui": "^0.3.0",
