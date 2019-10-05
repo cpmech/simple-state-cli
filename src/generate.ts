@@ -1,6 +1,7 @@
 import fsextra from 'fs-extra';
 import path from 'path';
-import { maybeWriteFile, camelize } from '@cpmech/basic';
+import { camelize } from '@cpmech/basic';
+import { maybeWriteFile } from '@cpmech/basic-sys';
 import {
   genIndex,
   genStore,

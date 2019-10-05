@@ -2,7 +2,7 @@ import mustache from 'mustache';
 
 const template = `// tslint:disable: member-ordering
 
-import { makeGetField, makeSetField } from '@cpmech/basic/dist/esm/pure';
+import { makeGetField, makeSetField } from '@cpmech/basic';
 import { newState{{klass}} } from './types';
 
 export class {{klass}} {

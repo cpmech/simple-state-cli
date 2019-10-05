@@ -1,6 +1,6 @@
 // tslint:disable: member-ordering
 
-import { makeGetField, makeSetField } from '@cpmech/basic/dist/esm/pure';
+import { makeGetField, makeSetField } from '@cpmech/basic';
 import { newStateData } from './types';
 
 export class Data {
