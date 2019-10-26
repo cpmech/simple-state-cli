@@ -3,13 +3,18 @@
 import { Data } from './data';
 import { Flags } from './flags';
 
+interface IObservers {
+  [name: string]: () => void;
+}
+
 // Store holds all state, organized within modules
 export class Store {
   // observers holds everyone who is interested in state updates
-  private observers: IObserver[] = [];
+  private observers: IObservers = {};
 
   // onChange notifies all observers that the state has been changed
-  private onChange = () => this.observers.forEach(observer => observer(this));
+  // private onChange = () => this.observers.forEach(observer => observer(this));
+  private onChange = () => Object.keys(this.observers).forEach(name => this.observers[name]());
 
   //////////////////// modules go here ////////////////////////
   readonly data = new Data(this.onChange);
@@ -18,9 +23,11 @@ export class Store {
 
   // subscribe adds someone to be notified about state updates
   // NOTE: returns a function to unsubscribe
-  subscribe = (observer: IObserver): (() => void) => {
-    const index = this.observers.push(observer) - 1;
-    return () => this.observers.splice(index, 1);
+  subscribe = (observer: () => void, name: string): (() => void) => {
+    this.observers[name] = observer;
+    return () => {
+      delete this.observers[name];
+    };
   };
 
   // reset clears the state
@@ -34,6 +41,3 @@ export class Store {
     }
   };
 }
-
-// updating function
-export type IObserver = (store: Store) => void;
