@@ -14,7 +14,6 @@ export class Store {
   private observers: IObservers = {};
 
   // onChange notifies all observers that the state has been changed
-  // private onChange = () => this.observers.forEach(observer => observer(this));
   private onChange = () => Object.keys(this.observers).forEach(name => this.observers[name]());
 
   //////////////////// modules go here ////////////////////////
