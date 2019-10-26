@@ -3,6 +3,7 @@
 import { Data } from './data';
 import { Flags } from './flags';
 
+// IObservers defines the object to hold all observers by name
 interface IObservers {
   [name: string]: () => void;
 }
