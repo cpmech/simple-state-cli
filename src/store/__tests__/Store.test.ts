@@ -53,16 +53,37 @@ describe('Store', () => {
       const st = new Store();
       const obs1 = jest.fn();
       const obs2 = jest.fn();
+      const obs3 = jest.fn();
+      const obs4 = jest.fn();
       const unsubscribe1 = st.subscribe(obs1, 'obs1');
       const unsubscribe2 = st.subscribe(obs2, 'obs2');
+      const unsubscribe3 = st.subscribe(obs3, 'obs3');
+      const unsubscribe4 = st.subscribe(obs4, 'obs4');
       st.data.setBooleanField('someBoolean', true);
       expect(obs1).toBeCalledTimes(1);
       expect(obs2).toBeCalledTimes(1);
+      expect(obs3).toBeCalledTimes(1);
+      expect(obs4).toBeCalledTimes(1);
       unsubscribe1();
       unsubscribe2();
       st.data.setBooleanField('someBoolean', false);
       expect(obs1).toBeCalledTimes(1);
       expect(obs2).toBeCalledTimes(1);
+      expect(obs3).toBeCalledTimes(2);
+      expect(obs4).toBeCalledTimes(2);
+      unsubscribe1(); // should do no harm
+      unsubscribe4();
+      st.data.setBooleanField('someBoolean', true);
+      expect(obs1).toBeCalledTimes(1);
+      expect(obs2).toBeCalledTimes(1);
+      expect(obs3).toBeCalledTimes(3);
+      expect(obs4).toBeCalledTimes(2);
+      unsubscribe3();
+      st.data.setBooleanField('someBoolean', false);
+      expect(obs1).toBeCalledTimes(1);
+      expect(obs2).toBeCalledTimes(1);
+      expect(obs3).toBeCalledTimes(3);
+      expect(obs4).toBeCalledTimes(2);
     });
   });
 
