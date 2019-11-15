@@ -3,9 +3,7 @@ import { camelize } from '@cpmech/basic';
 import { store } from '../store';
 import { IRender } from './types';
 
-const template = `// tslint:disable: member-ordering
-
-{{#modules}}
+const template = `{{#modules}}
 import { {{#cap}}{{.}}{{/cap}} } from './{{.}}';
 {{/modules}}
 
