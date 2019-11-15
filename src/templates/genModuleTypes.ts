@@ -11,7 +11,7 @@ const template = `export interface IState{{klass}} {
 export const newState{{klass}} = (): IState{{klass}} => ({
   someBoolean: false,
   someNumber: 0,
-  someString: '',
+  someString: 'NADA',
 });
 `;
 

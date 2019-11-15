@@ -23,23 +23,23 @@ describe('{{klass}}', () => {
 
   describe('getters', () => {
     it('should get the right values', () => {
-      expect({{name}}.getStringField('role')).toBe('NADA');
+      expect({{name}}.getStringField('someString')).toBe('NADA');
       expect(onChange).toBeCalledTimes(1);
     });
   });
 
   describe('setters', () => {
     it('should set the right values and call onChange', () => {
-      expect({{name}}.state.role).toBe('NADA');
-      {{name}}.setStringField('role', 'TESTER');
-      expect({{name}}.state.role).toBe('TESTER');
+      expect({{name}}.state.someString).toBe('NADA');
+      {{name}}.setStringField('someString', 'TESTER');
+      expect({{name}}.state.someString).toBe('TESTER');
       expect(onChange).toBeCalledTimes(2);
     });
 
     it('should not call onChange if there is no difference', () => {
-      expect({{name}}.state.role).toBe('TESTER');
-      {{name}}.setStringField('role', 'TESTER');
-      expect({{name}}.state.role).toBe('TESTER');
+      expect({{name}}.state.someString).toBe('TESTER');
+      {{name}}.setStringField('someString', 'TESTER');
+      expect({{name}}.state.someString).toBe('TESTER');
       expect(onChange).toBeCalledTimes(2);
     });
   });

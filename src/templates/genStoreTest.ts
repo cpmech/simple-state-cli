@@ -25,18 +25,18 @@ describe('Store', () => {
 
   describe('observers', () => {
     it('should call observers', () => {
-      store.{{name}}.setStringField('role', 'TESTER');
+      store.{{name}}.setStringField('someString', 'TESTER');
       expect(observer).toBeCalledTimes(2);
     });
 
     it('should properly unsubscribe observers', () => {
       const temporaryObserver = jest.fn();
       const unsubscribe = store.subscribe(temporaryObserver, 'store-test-temporary-observer');
-      store.{{name}}.setStringField('role', 'ADMIN');
+      store.{{name}}.setStringField('someString', 'ADMIN');
       expect(temporaryObserver).toBeCalledTimes(1);
       expect(observer).toBeCalledTimes(3);
       unsubscribe();
-      store.{{name}}.setStringField('role', 'TESTER');
+      store.{{name}}.setStringField('someString', 'TESTER');
       expect(temporaryObserver).toBeCalledTimes(1);
       expect(observer).toBeCalledTimes(4);
     });
