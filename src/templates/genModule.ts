@@ -1,8 +1,6 @@
 import mustache from 'mustache';
 
-const template = `// tslint:disable: member-ordering
-
-import { makeGetField, makeSetField } from '@cpmech/basic';
+const template = `import { makeGetField, makeSetField } from '@cpmech/basic';
 import { newState{{klass}} } from './types';
 
 export class {{klass}} {
