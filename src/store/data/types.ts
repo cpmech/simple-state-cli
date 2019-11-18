@@ -13,3 +13,5 @@ export const newStateData = (): IStateData => ({
   someBoolean: false,
   someNumber: 0,
 });
+
+export const zeroStateData = newStateData();

@@ -13,6 +13,8 @@ export const newState{{klass}} = (): IState{{klass}} => ({
   someNumber: 0,
   someString: 'NADA',
 });
+
+export const zeroState{{klass}} = newState{{klass}}();
 `;
 
 export const genModuleTypes = (name: string, klass: string): string => {

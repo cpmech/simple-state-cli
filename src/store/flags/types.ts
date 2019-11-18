@@ -9,3 +9,5 @@ export const newStateFlags = (): IStateFlags => ({
   overwrite: true,
   generateProject: true,
 });
+
+export const zeroStateFlags = newStateFlags();
