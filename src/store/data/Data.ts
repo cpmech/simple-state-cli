@@ -1,7 +1,7 @@
-// tslint:disable: member-ordering
-
-import { makeGetField, makeSetField } from '@cpmech/basic';
+import { makeGetField, makeSetField, copySimple } from '@cpmech/basic';
 import { newStateData } from './types';
+
+const refState = newStateData();
 
 export class Data {
   readonly state = newStateData();
@@ -48,7 +48,6 @@ export class Data {
   };
 
   resetWithoutCallingOnChange = () => {
-    const newState = newStateData();
-    Object.keys(newState).forEach(key => ((this.state as any)[key] = (newState as any)[key]));
+    copySimple(this.state, refState);
   };
 }

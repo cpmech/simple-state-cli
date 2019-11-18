@@ -18,6 +18,7 @@
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "object-literal-key-quotes": false,
     "no-unused-expression": [true, "allow-new"],
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "member-ordering": false
   }
 }

@@ -1,7 +1,7 @@
-// tslint:disable: member-ordering
-
-import { makeGetField, makeSetField } from '@cpmech/basic';
+import { makeGetField, makeSetField, copySimple } from '@cpmech/basic';
 import { newStateFlags } from './types';
+
+const refState = newStateFlags();
 
 export class Flags {
   readonly state = newStateFlags();
@@ -18,7 +18,6 @@ export class Flags {
   setBooleanField = makeSetField<boolean>(this.state, this.onChange, 'boolean');
 
   resetWithoutCallingOnChange = () => {
-    const newState = newStateFlags();
-    Object.keys(newState).forEach(key => ((this.state as any)[key] = (newState as any)[key]));
+    copySimple(this.state, refState);
   };
 }
