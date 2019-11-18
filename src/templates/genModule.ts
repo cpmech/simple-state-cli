@@ -1,7 +1,9 @@
 import mustache from 'mustache';
 
-const template = `import { makeGetField, makeSetField } from '@cpmech/basic';
+const template = `import { makeGetField, makeSetField, copySimple } from '@cpmech/basic';
 import { newState{{klass}} } from './types';
+
+const refState = newState{{klass}}();
 
 export class {{klass}} {
   readonly state = newState{{klass}}();
@@ -22,8 +24,7 @@ export class {{klass}} {
   setStringField = makeSetField<string>(this.state, this.onChange, 'string');
 
   resetWithoutCallingOnChange = () => {
-    const newState = newState{{klass}}();
-    Object.keys(newState).forEach(key => ((this.state as any)[key] = (newState as any)[key]));
+    copySimple(this.state, refState);
   };
 }
 `;

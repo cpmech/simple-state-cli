@@ -17,23 +17,23 @@ const template = `{
   },
   "main": "dist/index.js",
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.7",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.8",
     "jest": "^24.9.0",
-    "prettier": "^1.18.2",
-    "rollup": "^1.21.4",
+    "prettier": "^1.19.1",
+    "rollup": "^1.27.0",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-typescript2": "^0.24.2",
+    "rollup-plugin-typescript2": "^0.25.2",
     "ts-jest": "^24.1.0",
-    "ts-node": "^8.4.1",
-    "tslint": "^5.20.0",
+    "ts-node": "^8.5.2",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@cpmech/basic": "^1.1.10"
+    "@cpmech/basic": "*"
   }
 }
 `;
