@@ -1,7 +1,7 @@
 import { makeGetField, makeSetField, copySimple } from '@cpmech/basic';
 import { newStateData } from './types';
 
-const refState = newStateData();
+const zeroState = newStateData();
 
 export class Data {
   readonly state = newStateData();
@@ -48,6 +48,6 @@ export class Data {
   };
 
   resetWithoutCallingOnChange = () => {
-    copySimple(this.state, refState);
+    copySimple(this.state, zeroState);
   };
 }

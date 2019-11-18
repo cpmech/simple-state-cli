@@ -1,7 +1,7 @@
 import { makeGetField, makeSetField, copySimple } from '@cpmech/basic';
 import { newStateFlags } from './types';
 
-const refState = newStateFlags();
+const zeroState = newStateFlags();
 
 export class Flags {
   readonly state = newStateFlags();
@@ -18,6 +18,6 @@ export class Flags {
   setBooleanField = makeSetField<boolean>(this.state, this.onChange, 'boolean');
 
   resetWithoutCallingOnChange = () => {
-    copySimple(this.state, refState);
+    copySimple(this.state, zeroState);
   };
 }
